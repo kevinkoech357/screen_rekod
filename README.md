@@ -1,5 +1,5 @@
-# Screenrekod
-## Capture, Share, Replay Your World
+                                                    # Screenrekod
+                                        ### Capture, Share, Replay Your World
 
 Screenrekod is a web application that allows users to record their screens, capture audio, and securely upload and share their recordings. It's designed to be user-friendly, privacy-conscious, and flexible. Whether you're an educator, content creator, or someone who needs to share screen recordings, Screenrekod has you covered.
 
@@ -21,7 +21,7 @@ Screenrekod is a web application that allows users to record their screens, capt
 
 * Multimedia Processing: Python-ffmpeg for audio generation and Openai-whisper for transcription.
 
-* Subtitles: Pysrt for subtitle generation.
+* Subtitles:
 
 * Task Scheduling: Celery for managing background tasks.
 
