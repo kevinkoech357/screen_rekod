@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Register • ScreenRekod{% endblock %}
+
+{% block content %}
+    <main class="container">
+        <article class="grid">
+            <div>
+                <hgroup>
+                    <h1>Register</h1>
+                    <h2>Create a new account</h2>
+                </hgroup>
+                <form method="POST" action="{{ url_for('auth.register') }}" class="registration-form">
+                    {{ form.hidden_tag() }}
+
+                    <div class="form-group">
+                        {{ form.username.label(class="form-label") }}
+                        {{ form.username(class="form-input", placeholder="Username", required="required") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-input", placeholder="Email", required="required") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-input", placeholder="Password", required="required") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.confirm_password.label(class="form-label") }}
+                        {{ form.confirm_password(class="form-input", placeholder="Confirm Password", required="required") }}
+                    </div>
+
+                    <button type="submit" class="contrast">Register</button>
+                </form>
+            </div>
+            <div></div>
+        </article>
+    </main>
+{% endblock %}
