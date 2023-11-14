@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}ScreenRekod{% endblock %}</title>
+    <!-- Pico.css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flash.css') }}" />
+
+</head>
+<body>
+    <!-- Hero -->
+    <div class="hero" data-theme="dark">
+   <nav class="container-fluid">
+        <ul>
+          <li>
+            <a href="./" class="contrast" onclick="event.preventDefault()"
+              ><strong>ScreenRekod</strong></a
+            >
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <details role="list" dir="rtl">
+              <summary aria-haspopup="listbox" role="link" class="contrast">Theme</summary>
+              <ul role="listbox">
+                <li><a href="#" data-theme-switcher="auto">Auto</a></li>
+                <li><a href="#" data-theme-switcher="light">Light</a></li>
+                <li><a href="#" data-theme-switcher="dark">Dark</a></li>
+              </ul>
+            </details>
+            <li><a href="/" class="contrast">Home</a></li>
+            <li><a href="#about" class="contrast">About</a></li>
+            <li><a href="#contact" class="contrast">Contact</a></li>
+            <li><a href="/login" class="contrast">Login</a></li>
+          </li>
+        </ul>
+      </nav>
+
+    <!-- Header -->
+    <header class="container-fluid">
+
+    </header>
+    <!-- ./ Header -->
+    </div>
+    <!-- Hero -->
+    <!-- Flashed messages section -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                    <div class="flash {{ category }}" id="flash-{{ loop.index }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="container-fluid">
+        <small>Built with <a href="https://picocss.com" class="secondary">Pico</a></small>
+    </footer>
+    <!-- ./ Footer -->
+
+    <!-- Minimal theme switcher -->
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <!-- Timeout for flash messages -->
+    <script src="{{ url_for('static', filename='js/flash.js') }}"></script>
+
+</body>
+</html>
