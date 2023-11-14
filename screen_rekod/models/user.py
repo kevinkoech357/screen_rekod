@@ -1,52 +1,75 @@
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 from screen_rekod.extensions import db
 from sqlalchemy.orm import relationship
-from sqlalchemy import ForeignKey
-from screen_rekod.models.video import Video
+import uuid
 
-class User(db.Model):
+def generate_uuid():
+    return str(uuid.uuid4())
+
+class User(db.Model, UserMixin):
     """
     User model for representing user data.
 
     Attributes:
         id (str): Unique user identifier.
-        first_name (str): User's first name.
-        middle_name (str): User's middle name (optional).
-        last_name (str): User's last name.
-        password (str): User's password.
+        username (str): User's last name.
+        email (str): User's email address.
+        password_hash (str): Hashed user password.
         created_at (datetime): Timestamp of when the user was created.
 
     Relationships:
         videos (List[Video]): A list of videos associated with the user.
-
     """
+
     __tablename__ = "user"
 
-    id = db.Column(db.String(32), primary_key=True, default=generate_uuid, nullable=False)
-    first_name = db.Column(db.String(50), nullable=False)
-    middle_name = db.Column(db.String(50))
-    last_name = db.Column(db.String(50), nullable=False)
-    password = db.Column(db.String(66), nullable=False)
-    created_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
+    id = db.Column(
+        db.String(32), primary_key=True, default=generate_uuid, nullable=False
+    )
+    username = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
+    created_at = db.Column(
+        db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False
+    )
 
     # Define the relationship with the Video model
-    videos = relationship("Video", back_populates="user")
+    videos = db.relationship("Video", back_populates="user")
 
-    def __init__(self, first_name, last_name, middle_name=None, password, created_at):
+    def __init__(self, username, email, password):
         """
         Initialize a new User instance.
 
         Args:
-            first_name (str): User's first name.
-            last_name (str): User's last name.
-            middle_name (str, optional): User's middle name (default is None).
+            username (str): User's username.
+            email (str): User's email.
             password (str): User's password.
-            created_at (datetime): Timestamp of when the user was created.
         """
-        self.first_name = first_name
-        self.middle_name = middle_name
-        self.last_name = last_name
-        self.password = password
-        self.created_at = created_at
+        self.username = username
+        self.email = email
+        self.set_password(password)
+
+    def set_password(self, password):
+        """
+        Set the user's password by hashing the provided password.
+
+        Args:
+            password (str): The plain-text password to be hashed.
+        """
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        """
+        Check if the provided password matches the stored hashed password.
+
+        Args:
+            password (str): The plain-text password to be checked.
+
+        Returns:
+            bool: True if the password is correct, False otherwise.
+        """
+        return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
         """
@@ -55,7 +78,7 @@ class User(db.Model):
         Returns:
             str: Object representation.
         """
-        return f"<User(id={self.id}, first_name={self.first_name}, last_name={self.last_name})>"
+        return f"<User(id={self.id}, username={self.username}, email={self.email}, created_at={self.created_at})>"
 
     def format(self):
         """
@@ -66,9 +89,7 @@ class User(db.Model):
         """
         return {
             "id": self.id,
-            "first_name": self.first_name,
-            "middle_name": self.middle_name,
-            "last_name": self.last_name,
-            "password": self.password,
-            "created_at": self.created_at
+            "username": self.username,
+            "email": self.email,
+            "created_at": self.created_at,
         }
