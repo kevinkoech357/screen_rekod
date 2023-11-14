@@ -1,3 +1,7 @@
 instance/
+.env
 env/
 pycache/
+__pycache__/
+screen_rekod/__pycache__/
+screen_rekod/auth/__pycache__/
