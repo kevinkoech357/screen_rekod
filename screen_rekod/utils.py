@@ -1,5 +1,6 @@
 from screen_rekod.extensions import db
 
+
 def create_database(app):
     """
     Create Database
@@ -7,4 +8,4 @@ def create_database(app):
 
     with app.app_context():
         db.create_all()
-        print('Database created successfully')
+        print("Database created successfully")
