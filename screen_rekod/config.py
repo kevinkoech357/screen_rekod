@@ -18,3 +18,6 @@ class App_Config:
 
     # Disable echoing SQL statements to the console
     SQLALCHEMY_ECHO = False
+
+    # Flashed message duration
+    MESSAGE_FLASHING_OPTIONS = {'duration': 2}
