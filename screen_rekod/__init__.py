@@ -1,11 +1,15 @@
-from flask import Flask
-from screen_rekod.extensions import db, login_manager
-from screen_rekod.utils import create_database
+from flask import Flask, render_template
 from flask_cors import CORS
 from screen_rekod.config import App_Config
-from screen_rekod.models.user import User
-from screen_rekod.models.videos import Video
-from screen_rekod.models.subtitles import Subtitle
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+from flask_bootstrap import Bootstrap5
+
+
+db = SQLAlchemy()
+login_manager = LoginManager()
+bootstrap = Bootstrap5()
+
 
 def create_app():
     # Initialize flask
@@ -19,6 +23,7 @@ def create_app():
 
     db.init_app(app)
     login_manager.init_app(app)
+    bootstrap.init_app(app)
 
     # User loader function
     @login_manager.user_loader
@@ -33,6 +38,17 @@ def create_app():
     app.register_blueprint(auth)
     app.register_blueprint(user)
 
-    create_database(app)
+    # Import models
+    from screen_rekod.models.user import User
+    from screen_rekod.models.videos import Video
+
+    with app.app_context():
+        db.create_all()
+        print("Database created successfully")
+
+    # 404 error handler
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return render_template('404.html'), 404
 
     return app
