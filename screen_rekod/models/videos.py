@@ -1,4 +1,4 @@
-from screen_rekod.extensions import db
+from screen_rekod import db
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey
 
@@ -37,8 +37,6 @@ class Video(db.Model):
     # Define a relationship between the Video and User models
     user = relationship("User", back_populates="videos")
 
-    # Define the relationship between the Video and Subtitle models
-    subtitles = db.relationship("Subtitle", back_populates="video")
 
     def __init__(self, user, file_path, created_at):
         """

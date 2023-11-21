@@ -1,6 +1,6 @@
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from screen_rekod.extensions import db
+from screen_rekod import db
 from sqlalchemy.orm import relationship
 import uuid
 
