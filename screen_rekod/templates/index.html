@@ -1,24 +1,158 @@
-{% extends 'base.html' %}
-
-{% block title %}Home • ScreenRekod{% endblock %}
-
-{% block description %}Welcome to ScreenRekod - Record and Share Your Screen{% endblock %}
+{% extends "base.html" %}
 
 {% block content %}
-    <main class="container">
-        <section id="home">
-            <h1>Welcome to ScreenRekod!</h1>
-            <p>Record and share your screen effortlessly.</p>
-        </section>
+    <header class="bg-dark">
+        <!-- Start: Hero Clean Reverse -->
+        <div class="container pt-4 pt-xl-5">
+            <div class="row pt-5">
+                <div class="col-sm-11 col-md-8 col-xl-6 text-center text-md-start mx-auto">
+                    <div class="text-center">
+                        <p class="fw-bold text-success mb-2">Voted #1 Worldwide</p>
+                        <h1 class="fw-bold">Capture, Share, Replay Your World</h1>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End: Hero Clean Reverse -->
+    </header>
 
-        <section id="about">
-            <h2>About ScreenRekod</h2>
-            <p>ScreenRekod is a platform that allows users to easily record and share their screens.</p>
-        </section>
+    <section class="py-5"></section>
 
-        <section id="contact">
-            <h2>Contact ScreenRekod</h2>
-            <p>For support or inquiries, please contact us at support@screenrekod.com.</p>
-        </section>
-    </main>
+    <section>
+        <!-- Start: Features Cards -->
+        <div id="Features" class="container bg-dark py-5">
+            <div class="row">
+                <div class="col-md-8 col-xl-6 text-center mx-auto">
+                    <p class="fw-bold text-success mb-2">Features</p>
+                    <h3 class="fw-bold">What we guarantee</h3>
+                </div>
+            </div>
+            <div class="py-5 p-lg-5">
+                <div class="row row-cols-1 row-cols-md-2 mx-auto" style="max-width: 900px;">
+                    <!-- Feature 1 -->
+                    <div class="col mb-5">
+                        <div class="card shadow-sm">
+                            <div class="card-body px-4 py-5 px-md-5">
+                                <h5 class="fw-bold card-title">Effortless Screen Recording</h5>
+                                <p class="text-muted card-text mb-4">ScreenRekod ensures an intuitive and user-friendly interface, making screen recording accessible to users of all levels. Our commitment is to provide a straightforward and hassle-free experience for capturing and sharing screen content.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="col mb-5">
+                        <div class="card shadow-sm">
+                            <div class="card-body px-4 py-5 px-md-5">
+                                <h5 class="fw-bold card-title">Versatility in Use</h5>
+                                <p class="text-muted card-text mb-4">We guarantee that ScreenRekod caters to a diverse audience, offering versatile recording options to suit various needs. Whether you're a content creator, educator, or professional, ScreenRekod adapts to different use cases, providing flexibility in screen recording.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="col mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body px-4 py-5 px-md-5">
+                                <h5 class="fw-bold card-title">Instant Sharing and Saving</h5>
+                                <p class="text-muted card-text mb-4">ScreenRekod is designed to streamline the sharing process. We guarantee instant sharing options, allowing users to collaborate seamlessly by sharing recordings with colleagues, students, or their online community.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Feature 4 -->
+                    <div class="col mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body px-4 py-5 px-md-5">
+                                <h5 class="fw-bold card-title">Privacy and Security</h5>
+                                <p class="text-muted card-text mb-4">Your privacy is our priority. ScreenRekod guarantees the highest standards of confidentiality and protection for your screen recordings. Rest assured that your data is handled with the utmost care, ensuring a secure environment for your screen recording activities.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End: Features Cards -->
+    </section>
+
+    <section class="py-5"></section>
+
+    <section id="Testimonials" class="py-5 mt-5">
+        <!-- Start: Testimonials -->
+        <div class="container py-5">
+            <div class="row mb-5">
+                <div class="col-md-8 col-xl-6 text-center mx-auto">
+                    <p class="fw-bold text-success mb-2">Testimonials</p>
+                    <h2 class="fw-bold"><strong>What People Say About us</strong></h2>
+                </div>
+            </div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 d-sm-flex justify-content-sm-center">
+                <!-- Testimonial 1 -->
+                <div class="col mb-4">
+                    <div class="d-flex flex-column align-items-center align-items-sm-start">
+                        <p class="bg-dark border rounded border-dark p-4">ScreenRekod has simplified our technical support process. Recording issues and sharing solutions with team members or clients is now a seamless experience. The privacy assurance is crucial for handling sensitive information. A reliable tool for IT professionals.</p>
+                        <div class="d-flex"><img class="rounded-circle flex-shrink-0 me-3 fit-cover" width="50" height="50" src="/static/assets/img/team/avatar2.jpg?h=7086b181e9fb853914a2cca97301c640">
+                            <div>
+                                <p class="fw-bold text-primary mb-0">Chris Thompson</p>
+                                <p class="text-muted mb-0">IT Professional</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="col mb-4">
+                    <div class="d-flex flex-column align-items-center align-items-sm-start">
+                        <p class="bg-dark border rounded border-dark p-4">ScreenRekod has significantly improved our project collaboration. The ability to record and share screen content instantly has streamlined our communication within the team. It's a must-have for any project manager looking to enhance productivity. Totally recommend.</p>
+                        <div class="d-flex"><img class="rounded-circle flex-shrink-0 me-3 fit-cover" width="50" height="50" src="/static/assets/img/team/avatar4.jpg?h=13fcb1a3bcb58463519bc5974513259b">
+                            <div>
+                                <p class="fw-bold text-primary mb-0">Mark Johnson</p>
+                                <p class="text-muted mb-0">Project Manager</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonial 3 -->
+                <div class="col mb-4">
+                    <div class="d-flex flex-column align-items-center align-items-sm-start">
+                        <p class="bg-dark border rounded border-dark p-4">As an educator, ScreenRekod has become an invaluable tool in my virtual classroom. The effortless screen recording and instant sharing options have made lesson preparation and communication with students more engaging and efficient. Highly recommended!</p>
+                        <div class="d-flex"><img class="rounded-circle flex-shrink-0 me-3 fit-cover" width="50" height="50" src="/static/assets/img/team/avatar5.jpg?h=eef7fb3f7a2ca8a516d789de0734f5ee">
+                            <div>
+                                <p class="fw-bold text-primary mb-0">Emily Davis</p>
+                                <p class="text-muted mb-0">Educator</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End: Testimonials -->
+    </section>
+
+    <section class="py-5"></section>
+
+    <section id="Contact" class="py-5">
+        <!-- Start: Contact Details -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-xl-6 text-center mx-auto">
+                    <p class="fw-bold text-success mb-2">Contact Us</p>
+                    <h3 class="fw-bold">Have Questions or Suggestions?</h3>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-lg-6 mb-4">
+                    <p class="text-muted">Feel free to reach out to us. We are here to assist you with any inquiries or feedback you may have. Let's connect!</p>
+                </div>
+                <div class="col-lg-6">
+                    <form>
+                        <div class="mb-4">
+                            <input class="form-control" type="text" placeholder="Your Name" aria-label="Your Name">
+                        </div>
+                        <div class="mb-4">
+                            <input class="form-control" type="email" placeholder="Your Email" aria-label="Your Email">
+                        </div>
+                        <div class="mb-4">
+                            <textarea class="form-control" rows="4" placeholder="Your Message"></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-success btn-lg" type="submit">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}
