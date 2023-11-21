@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from screen_rekod.auth.forms import LoginForm, RegistrationForm
 from screen_rekod.models.user import User
-from screen_rekod.extensions import db
+from screen_rekod import db
 
 auth = Blueprint('auth', __name__, template_folder='templates', static_folder='static')
 
@@ -13,7 +13,7 @@ def login():
 
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        user = User.query.filter((User.username == form.username_or_email.data) | (User.email == form.username_or_email.data)).first()
         if user and user.check_password(form.password.data):
             login_user(user)
             flash('Login successful!', 'success')
@@ -35,15 +35,15 @@ def register():
 
         if existing_email_user:
             flash('Email already in use. Please choose another email.', 'danger')
-            return redirect(url_for('auth.register'))
+            #return redirect(url_for('auth.register'))
 
         if existing_username_user:
             flash('Username already in use. Please choose another username.', 'danger')
-            return redirect(url_for('auth.register'))
+            #return redirect(url_for('auth.register'))
 
         if form.password.data != form.confirm_password.data:
             flash('Passwords do not match. Please enter matching passwords.', 'danger')
-            return redirect(url_for('auth.register'))
+            #return redirect(url_for('auth.register'))
 
         user = User(username=form.username.data, email=form.email.data, password=form.password.data)
         db.session.add(user)
