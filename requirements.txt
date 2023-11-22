@@ -1,6 +1,9 @@
 black==22.3.0
 blinker==1.7.0
+Bootstrap-Flask==2.3.2
 click==8.1.7
+dnspython==2.4.2
+email-validator==2.1.0.post1
 Flask==3.0.0
 Flask-Cors==4.0.0
 Flask-Login==0.6.3
@@ -8,6 +11,7 @@ Flask-SQLAlchemy==3.1.1
 Flask-WTF==1.2.1
 greenlet==3.0.1
 gunicorn==21.2.0
+idna==3.4
 itsdangerous==2.1.2
 Jinja2==3.1.2
 MarkupSafe==2.1.3
