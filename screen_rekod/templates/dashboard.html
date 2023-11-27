@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- Main content area -->
+            <main class="col-md-12 ms-sm-auto col-lg-12 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-2 border-bottom">
+                    <!-- Page heading -->
+                    <h1 class="h2">Welcome, {{ current_user.username }}!</h1>
+
+                    <!-- Buttons on the right side -->
+                    <div class="ml-auto">
+                        <a class="btn btn-danger rounded-pill px-4 py-2 text-light" id="startRecording">Start Recording</a>
+                        <a class="btn btn-secondary text-light" id="stopRecording" href="#">Stop Recording</a>
+                    </div>
+                </div>
+
+                <!-- Grid view of user-related videos -->
+                <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+                    {% if user_videos %}
+                        {% for video in user_videos %}
+                            <div class="col">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <!-- Video Player -->
+                                        <video class="w-100" controls>
+                                            <source src="{{ url_for('user.serve_video', filename=video.filename) }}" type="video/webm">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <!-- View and Download Buttons (Initially Hidden) -->
+                                        <div class="button-overlay">
+                                            <div class="d-flex justify-content-between">
+                                            <a href="{{ url_for('user.video_detail', video_id=video.id) }}" class="btn btn-primary btn-sm text-light mr-3">View</a>
+                                            <a href="{{ url_for('user.download_video', filename=video.filename) }}" class="btn btn-success btn-sm text-light ml-2">Download</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <small class="text-muted">{{ video.title }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-md-12">
+                            <p>You don't have any videos yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal for Displaying Recorded Video -->
+    <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <!-- Video Player -->
+                    <video id="recordedVideoModal" class="w-100" controls autoplay></video>
+
+                    <!-- Title and Description Inputs -->
+                    <div class="mt-3">
+                        <input type="text" class="form-control" id="titleModal" placeholder="Title">
+                    </div>
+                    <div class="mt-3">
+                        <input type="text" class="form-control" id="descriptionModal" placeholder="Description">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="uploadButtonModal">Upload</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
