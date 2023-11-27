@@ -2,6 +2,7 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from screen_rekod import db
 from sqlalchemy.orm import relationship
+from sqlalchemy import func
 import uuid
 
 def generate_uuid():
@@ -31,7 +32,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
     created_at = db.Column(
-        db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False
+        db.TIMESTAMP(timezone=True), server_default=func.now(), nullable=False
     )
 
     # Define the relationship with the Video model

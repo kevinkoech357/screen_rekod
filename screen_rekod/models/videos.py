@@ -1,7 +1,6 @@
 from screen_rekod import db
 from sqlalchemy.orm import relationship
-from sqlalchemy import ForeignKey
-
+from sqlalchemy import func
 
 class Video(db.Model):
     """
@@ -10,14 +9,16 @@ class Video(db.Model):
     Attributes:
         id (int): Unique identifier for the video.
         user_id (str): Foreign key referencing the user who uploaded the video.
-        file_path (str): Path to the video file on the server.
+        title (str): Title of the video.
+        description (str): Description of the video.
+        filename (str): Filename of the video.
         created_at (datetime): Timestamp indicating when the video was created.
 
     Relationships:
         user (User): Relationship to the User model to associate videos with their respective users.
 
     Methods:
-        __init__(self, user, file_path,):
+        __init__(self, user, title, description, filename, created_at=None):
             Initializes a new Video instance.
 
         format(self):
@@ -29,26 +30,31 @@ class Video(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.String(32), db.ForeignKey("user.id"), nullable=False)
-    file_path = db.Column(db.String(255), nullable=False)
+    title = db.Column(db.String(100), nullable=True)
+    description = db.Column(db.String(255), nullable=True)
+    filename = db.Column(db.String(255), nullable=False)
     created_at = db.Column(
-        db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False
+        db.TIMESTAMP(timezone=True), server_default=func.now(), nullable=False
     )
 
     # Define a relationship between the Video and User models
     user = relationship("User", back_populates="videos")
 
-
-    def __init__(self, user, file_path, created_at):
+    def __init__(self, user, title, description, filename, created_at=None):
         """
         Initializes a new Video instance.
 
         Args:
             user (User): The user who uploaded the video.
-            file_path (str): Path to the video file on the server.
+            title (str): Title of the video.
+            description (str): Description of the video.
+            filename (str): Filename of the video.
         """
         self.user = user
-        self.file_path = file_path
-        self.created_at = created_at
+        self.title = title
+        self.description = description
+        self.filename = filename
+        self.created_at = created_at or db.func.current_timestamp()
 
     def format(self):
         """
@@ -60,6 +66,8 @@ class Video(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "file_path": self.file_path,
+            "title": self.title,
+            "description": self.description,
+            "filename": self.filename,
             "created_at": self.created_at,
         }
