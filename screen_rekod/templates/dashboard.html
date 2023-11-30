@@ -32,7 +32,7 @@
                                         <!-- View and Download Buttons (Initially Hidden) -->
                                         <div class="button-overlay">
                                             <div class="d-flex justify-content-between">
-                                            <a href="{{ url_for('user.video_detail', video_id=video.id) }}" class="btn btn-primary btn-sm text-light mr-3">View</a>
+                                            <a href="{{ url_for('video.video_detail', video_id=video.id) }}" class="btn btn-primary btn-sm text-light mr-3">View</a>
                                             <a href="{{ url_for('user.download_video', filename=video.filename) }}" class="btn btn-success btn-sm text-light ml-2">Download</a>
                                             </div>
                                         </div>
