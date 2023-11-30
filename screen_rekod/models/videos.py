@@ -2,12 +2,17 @@ from screen_rekod import db
 from sqlalchemy.orm import relationship
 from sqlalchemy import func
 
+
+def generate_uuid():
+    return str(uuid.uuid4())
+
+
 class Video(db.Model):
     """
     Represents a video record associated with a user.
 
     Attributes:
-        id (int): Unique identifier for the video.
+        id (str): Unique identifier for the video.
         user_id (str): Foreign key referencing the user who uploaded the video.
         title (str): Title of the video.
         description (str): Description of the video.
@@ -28,7 +33,9 @@ class Video(db.Model):
 
     __tablename__ = "video"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(
+        db.String(32), primary_key=True, default=generate_uuid, nullable=False
+    )
     user_id = db.Column(db.String(32), db.ForeignKey("user.id"), nullable=False)
     title = db.Column(db.String(100), nullable=True)
     description = db.Column(db.String(255), nullable=True)
