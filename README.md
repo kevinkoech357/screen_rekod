@@ -1,54 +1,77 @@
-![cover](https://github.com/kevinkoech357/screen_rekod/assets/102515005/c05dcd68-3721-464f-a80f-1027d6383780)
+# Screen Rekod
 
-Screenrekod is a web application that allows users to record their screens, capture audio, and securely upload and share their recordings. It's designed to be user-friendly, privacy-conscious, and flexible. Whether you're an educator, content creator, or someone who needs to share screen recordings, Screenrekod has you covered.
+## Description
+
+Screen Rekod is a powerful web application built on the Flask framework, designed to provide seamless screen recording capabilities. Whether you're creating instructional content, recording presentations, or capturing gameplay, Screen Rekod offers a sophisticated platform for high-quality screen recording.
+
+## Table of Contents
+
+- [Features](#features)
+- [Getting Started](#getting-started)
+  - [Installation](#installation)
+  - [Usage](#usage)
+- [Recording](#recording)
+- [Customization](#customization)
+- [Before You Go...](#before-you-go)
+- [License](#license)
 
 ## Features
-* Screen Recording: Record your screen activities with ease, whether it's for tutorials, presentations, or gaming.
 
-* Audio Capture: Simultaneously capture audio to provide narration or commentary for your recordings.
-
-* Upload and Share: Upload your recordings to the secure server and share them with others via unique links.
-
-* User-Private Video Management: Manage your uploaded videos with privacy and access control. You can only see what you've uploaded.
-
-* Subtitle Generation: Optionally generate subtitles for your videos to make them more accessible to a wider audience.
-
-## Technologies Used
-* Programming Languages: Python (server-side), HTML/CSS (frontend), JavaScript (screen capture).
-
-* Web Framework: Flask for handling HTTP requests and user authentication.
-
-* Multimedia Processing: Python-ffmpeg for audio generation and Openai-whisper for transcription.
-
-* Subtitles:
-
-* Task Scheduling: Celery for managing background tasks.
-
-* Message Broker: Redis for efficient task queuing.
+- **Advanced Screen Capture:** Record your screen activities with precision.
+- **High-Resolution Video Recording:** Create professional-quality videos of your screen sessions.
+- **User-Friendly Interface:** Intuitive design for seamless user experience.
 
 ## Getting Started
-* Clone the repository to your local machine.
-* Set up a virtual environment for the project.
-* Install the required dependencies using pip install -r requirements.txt.
-* Configure your database settings and other environment variables.
-* Run the application using python run.py.
 
-## Usage
-* Sign up for an account or log in if you're an existing user.
-* Start recording your screen and capturing audio using the on-screen controls.
-* Once your recording is complete, choose to save and upload it.
-* Manage your uploaded videos and set access controls as needed.
-* Optionally generate subtitles and translate them into different languages for viewers.
-* Share your video links with others.
+### Installation
 
-## License
-This project is licensed under the MIT License. See the LICENSE file for details.
+To leverage Screen Rekod locally, follow these steps:
 
-## Contributing
-We welcome contributions from the open-source community. Please see our Contribution Guidelines for more information.
+```bash
+# Clone the repository
+$ git clone https://github.com/kevinkoech357/screen_rekod.git
 
-## Contact
-For questions or support, contact the project owner, kevinkoech@proton.me.
+# Navigate to the project directory
+$ cd screen-rekod
 
-## Acknowledgments
-I'd like to acknowledge the open-source community and the developers of the libraries and tools that made this project possible.
+# Create and activate a virtual environment
+$ python -m venv venv
+$ source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+
+# Install dependencies
+$ pip install -r requirements.txt
+
+# Start application
+$ python run.py
+```
+N/B: Navigate to 127.0.0.1:5000 on your browser to view the app.
+
+### Recording
+Explore the sophisticated screen recording services offered by Screen Rekod:
+
+- Real-time Screen Capture: Record your screen activities in real-time.
+- Versatile Video Recording: Capture presentations, tutorials, or gameplay with flexibility.
+
+#### Customization
+Tailor your recording experience with Screen Rekod's customizable features:
+
+- Screen Selection: Choose specific screens or application windows for targeted recording.
+
+### Usage
+To initiate a recording with Screen Rekod, follow these steps:
+
+- Launch the application.
+- Select the desired screen or application window for recording.
+- Configure recording settings based on your preferences.
+- Click the "Record" button to commence capturing your screen.
+- Stop the recording when your session is complete.
+
+### Before You Go...
+Explore additional tools and resources:
+
+* Transkript: Convert audio and video recordings into accurate written text.
+* Source Code: Access the source code of Screen Rekod on GitHub.
+
+### License
+This project is licensed under the MIT License. For a comprehensive overview, refer to the LICENSE file.
+
