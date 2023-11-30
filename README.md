@@ -1,4 +1,3 @@
-![cover](https://github.com/kevinkoech357/screen_rekod/assets/102515005/c05dcd68-3721-464f-a80f-1027d6383780)
 
 Screenrekod is a web application that allows users to record their screens, capture audio, and securely upload and share their recordings. It's designed to be user-friendly, privacy-conscious, and flexible. Whether you're an educator, content creator, or someone who needs to share screen recordings, Screenrekod has you covered.
 
