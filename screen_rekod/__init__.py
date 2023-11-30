@@ -19,7 +19,7 @@ def create_app():
         print("Using main db")
 
     # Initialize CORS
-    CORS(app, supports_credentials=True)
+    CORS(app)
 
     db.init_app(app)
     login_manager.init_app(app)
@@ -33,10 +33,12 @@ def create_app():
     # Import blueprints
     from screen_rekod.auth.routes import auth
     from screen_rekod.user.routes import user
+    from screen_rekod.video.routes import video
 
     # Register blueprints
     app.register_blueprint(auth)
     app.register_blueprint(user)
+    app.register_blueprint(video)
 
     # Import models
     from screen_rekod.models.user import User
@@ -49,10 +51,10 @@ def create_app():
     # Error handlers
     @app.errorhandler(404)
     def page_not_found(error):
-        return render_template('404.html'), 404
+        return render_template("404.html"), 404
 
     @app.errorhandler(500)
     def internal_server_error(error):
-        return render_template('500.html'), 500
+        return render_template("500.html"), 500
 
     return app
