@@ -22,9 +22,6 @@ user = Blueprint("user", __name__)
 # Specify the allowed file extensions and the upload folder
 ALLOWED_EXTENSIONS = {"webm"}
 
-# Import the logger instance from the main application
-logger = current_app.logger
-
 # Helper function to check if the file has an allowed extension
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -116,52 +113,67 @@ def upload():
         JSON: Response indicating success or error with status.
     """
     try:
-        if "video_file" in request.files:
-            file = request.files["video_file"]
-            title = request.form.get("title", "")
-            description = request.form.get("description", "")
+        # Use app.app_context()
+        with current_app.app_context():
+            # Import the logger instance from the main application
+            logger = current_app.logger
 
-            # Check if the file extension is allowed
-            extension = guess_extension(file.mimetype)
-            if not extension or extension[1:] not in ALLOWED_EXTENSIONS:
+            if "video_file" in request.files:
+                file = request.files["video_file"]
+                title = request.form.get("title", "")
+                description = request.form.get("description", "")
+
+                # Check if the file extension is allowed
+                extension = guess_extension(file.mimetype)
+                if not extension or extension[1:] not in ALLOWED_EXTENSIONS:
+                    return (
+                        jsonify(
+                            {"status": "error", "message": "Invalid file extension"}
+                        ),
+                        400,
+                    )
+
+                # Generate a unique filename with the help of consecutive numbering
+                i = 1
+                while True:
+                    filename = f"screen_rekod-{i}{extension}"
+                    dst = os.path.join(
+                        current_app.config.get("UPLOAD_FOLDER", "uploads"),
+                        secure_filename(filename),
+                    )
+                    if not os.path.exists(dst):
+                        break
+                    i += 1
+
+                # Save the file to disk
+                file.save(dst)
+
+                # Create a new Video record in the database
+                new_video = Video(
+                    title=title,
+                    description=description,
+                    filename=filename,
+                    user=current_user,
+                )
+
+                db.session.add(new_video)
+                db.session.commit()
+
                 return (
-                    jsonify({"status": "error", "message": "Invalid file extension"}),
-                    400,
+                    jsonify(
+                        {"status": "success", "message": "File successfully uploaded"}
+                    ),
+                    200,
                 )
-
-            # Generate a unique filename with the help of consecutive numbering
-            i = 1
-            while True:
-                filename = f"screen_rekod-{i}{extension}"
-                dst = os.path.join(
-                    current_app.config.get("UPLOAD_FOLDER", "uploads"),
-                    secure_filename(filename),
-                )
-                if not os.path.exists(dst):
-                    break
-                i += 1
-
-            # Save the file to disk
-            file.save(dst)
-
-            # Create a new Video record in the database
-            new_video = Video(
-                title=title,
-                description=description,
-                filename=filename,
-                user=current_user,
-            )
-
-            db.session.add(new_video)
-            db.session.commit()
 
             return (
-                jsonify({"status": "success", "message": "File successfully uploaded"}),
-                200,
+                jsonify({"status": "error", "message": "No video file provided"}),
+                400,
             )
-
-        return jsonify({"status": "error", "message": "No video file provided"}), 400
 
     except Exception as e:
         logger.error(f"Error during upload: {str(e)}")
-        return jsonify({"status": "error", "message": "Internal server error"}), 500
+        return (
+            jsonify({"status": "error", "message": "Internal server error"}),
+            500,
+        )
