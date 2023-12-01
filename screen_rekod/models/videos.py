@@ -1,6 +1,7 @@
 from screen_rekod import db
 from sqlalchemy.orm import relationship
 from sqlalchemy import func
+import uuid
 
 
 def generate_uuid():
