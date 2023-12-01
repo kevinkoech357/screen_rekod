@@ -1,7 +1,21 @@
 document.addEventListener('DOMContentLoaded', function () {
   // Function to manually trigger the modal
-  document.querySelector('.btn-edit').addEventListener('click', function () {
+  document.getElementById('editButton').addEventListener('click', function () {
     $('#editModal').modal('show');
+  });
+
+  // Event listener for update button
+  document.getElementById('saveChangesButton').addEventListener('click', function (event) {
+    // Prevent the form from submitting (to control the submission using your updateVideoDetails function)
+    event.preventDefault();
+
+    // Call your function to update video details
+    updateVideoDetails();
+  });
+
+  // Event listener for delete button
+  document.getElementById('deleteButton').addEventListener('click', function () {
+    deleteVideo('{{ url_for("video.delete_video", video_id=video.id) }}');
   });
 
   function updateVideoDetails () {

@@ -21,8 +21,13 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    const constraints = { video: true, audio: true };
-    navigator.mediaDevices.getDisplayMedia(constraints)
+    // const constraints = { video: true, audio: true, };
+    navigator.mediaDevices.getDisplayMedia(
+      {
+        video: true,
+        audio: true
+
+      })
       .then(function (stream) {
         const mime = MediaRecorder.isTypeSupported('video/webm; codecs=h264')
           ? 'video/webm; codecs=h264'
