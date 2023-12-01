@@ -167,12 +167,14 @@ def upload():
                     ),
                     200,
                 )
+                response.headers["Content-Type"] = "application/json"
                 return response
 
             response = make_response(
                 jsonify({"status": "error", "message": "No video file provided"}),
                 400,
             )
+            response.headers["Content-Type"] = "application/json"
             return response
 
     except Exception as e:
@@ -181,4 +183,5 @@ def upload():
             jsonify({"status": "error", "message": "Internal server error"}),
             500,
         )
+        response.headers["Content-Type"] = "application/json"
         return response
