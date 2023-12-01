@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('Description:', descriptionModal.value);
     console.log('Recorded Blob:', recordedBlob);
 
-    fetch('{{ url_for("user.upload") }}', {
+    fetch('/upload', {
       method: 'POST',
       body: formData
     })
