@@ -4,12 +4,14 @@ from screen_rekod.config import App_Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap5
+import logging
+import os
+from logging.handlers import RotatingFileHandler
 
 # Initialize Flask extensions
 db = SQLAlchemy()
 login_manager = LoginManager()
 bootstrap = Bootstrap5()
-
 
 def create_app():
     """
@@ -34,6 +36,25 @@ def create_app():
     db.init_app(app)
     login_manager.init_app(app)
     bootstrap.init_app(app)
+
+    # Ensure that the 'logs' directory exists
+    log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
+    os.makedirs(log_dir, exist_ok=True)
+
+    # Create a specific logger instance for the application
+    logger = logging.getLogger(__name__)
+
+    # Configure a rotating file handler
+    log_file = os.path.join(log_dir, 'screen_rekod.log')
+    log_handler = RotatingFileHandler(log_file, maxBytes=1024 * 1024, backupCount=5)
+    log_handler.setLevel(logging.DEBUG)
+
+    # Set a custom log format
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(module)s - %(message)s')
+    log_handler.setFormatter(formatter)
+
+    # Add the rotating file handler to the logger
+    logger.addHandler(log_handler)
 
     # User loader function
     @login_manager.user_loader
