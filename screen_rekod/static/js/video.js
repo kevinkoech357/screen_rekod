@@ -15,7 +15,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Event listener for delete button
   document.getElementById('deleteButton').addEventListener('click', function () {
-    deleteVideo('{{ url_for("video.delete_video", video_id=video.id) }}');
+    const deleteUrl = this.getAttribute('data-delete-url');
+    deleteVideo(deleteUrl);
   });
 
   function updateVideoDetails () {
@@ -28,8 +29,11 @@ document.addEventListener('DOMContentLoaded', function () {
     formData.append('title', updatedTitle);
     formData.append('description', updatedDescription);
 
+    // Get the update URL from the data attribute
+    const updateUrl = document.getElementById('saveChangesButton').getAttribute('data-update-url');
+
     // Make a fetch request to Flask route
-    fetch('{{ url_for("video.update_video", video_id=video.id) }}', {
+    fetch(updateUrl, {
       method: 'POST',
       body: formData
     })

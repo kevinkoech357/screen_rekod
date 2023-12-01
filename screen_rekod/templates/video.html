@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <!-- Font Awesome (for icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 </head>
+
 <body>
 
     <div class="container-fluid">
@@ -30,15 +32,23 @@
                     <div class="border-right pr-2">
                         <h4 id="videoTitle" class="text-light">{{ video.title }}</h4>
                         <p id="videoDescription" class="text-light">{{ video.description }}</p>
-                        <button id="editButton" class="btn btn-warning mb-2 btn-edit" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i> Edit</button>
+                        <button id="editButton" class="btn btn-warning mb-2 btn-edit"
+                            data-toggle="modal" data-target="#editModal">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
                     </div>
 
                     <!-- Action Buttons -->
                     <div class="d-flex flex-column justify-content-start align-items-end">
-                        <a href="{{ url_for('user.download_video', filename=video.filename) }}" class="btn btn-primary mb-2"><i class="fas fa-download"></i> Download</a>
+                        <a href="{{ url_for('user.download_video', filename=video.filename) }}" class="btn btn-primary mb-2">
+                            <i class="fas fa-download"></i> Download
+                        </a>
                         <button class="btn btn-success mb-2"><i class="fas fa-share-alt"></i> Share</button>
                         <button class="btn btn-info mb-2"><i class="fas fa-pen"></i> Transcribe</button>
-                        <button class="btn btn-danger mb-2" onclick="deleteVideo('{{ url_for("video.delete_video", video_id=video.id) }}')"><i class="fas fa-trash"></i> Delete</button>
+                        <button class="btn btn-danger mb-2" id="deleteButton"
+                            data-delete-url="{{ url_for('video.delete_video', video_id=video.id) }}">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
                     </div>
                 </div>
 
@@ -69,11 +79,15 @@
                         </div>
                         <div class="form-group">
                             <label for="editDescription">Description</label>
-                            <textarea class="form-control" id="editDescription" rows="3">{{ video.description }}</textarea>
+                            <textarea class="form-control" id="editDescription"
+                                rows="3">{{ video.description }}</textarea>
                         </div>
-                         <div class="modal-footer">
+                        <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="saveChangesButton">Save Changes</button>
+                            <button type="button" class="btn btn-primary" id="saveChangesButton"
+                                data-update-url="{{ url_for('video.update_video', video_id=video.id) }}">
+                                Save Changes
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -85,6 +99,6 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="{{ url_for('static', filename='js/video.js') }}"></script>
 
-
 </body>
+
 </html>
