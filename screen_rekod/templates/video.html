@@ -20,8 +20,8 @@
             <div class="col-md-8 text-center">
 
                 <!-- Border around the video container -->
-                <div class="video-container rounded shadow mb-3">
-                    <video controls width="100%">
+                <div class="video-container rounded mb-3">
+                    <video controls width="100%" autoplay>
                         <source src="{{ url_for('user.serve_video', filename=video.filename) }}" type="video/webm">
                         Your browser does not support the video tag.
                     </video>

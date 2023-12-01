@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
           }
 
           // Redirect to the dashboard
-          window.location.href = '{{ url_for("user.dashboard") }}';
+          window.location.href = window.location.origin + '/dashboard';
 
           console.log(data.message);
         })

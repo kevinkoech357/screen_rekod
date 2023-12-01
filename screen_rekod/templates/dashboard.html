@@ -25,7 +25,7 @@
                                 <div class="card h-100">
                                     <div class="card-body">
                                         <!-- Video Player -->
-                                        <video class="w-100" controls>
+                                        <video class="w-100" controls autoplay>
                                             <source src="{{ url_for('user.serve_video', filename=video.filename) }}" type="video/webm">
                                             Your browser does not support the video tag.
                                         </video>
