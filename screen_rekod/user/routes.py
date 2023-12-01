@@ -28,7 +28,7 @@ def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@user.route("/")
+@user.route("/", methods=["GET"])
 def index():
     """
     Render the index page.
@@ -39,7 +39,7 @@ def index():
     return render_template("index.html")
 
 
-@user.route("/dashboard")
+@user.route("/dashboard", methods=["GET"])
 @login_required
 def dashboard():
     """

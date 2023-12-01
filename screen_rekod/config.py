@@ -19,4 +19,4 @@ class App_Config:
     MESSAGE_FLASHING_OPTIONS = {"duration": 5}
     SESSION_PERMANENT = False
     # Video uploads folder
-    UPLOAD_FOLDER = "uploads"
+    UPLOAD_FOLDER = "/home/ubuntu/screen_rekod/uploads"
