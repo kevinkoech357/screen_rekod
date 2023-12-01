@@ -82,21 +82,24 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('Description:', descriptionModal.value);
     console.log('Recorded Blob:', recordedBlob);
 
-    fetch('/upload', {
+    fetch('{{ url_for("user.upload") }}', {
       method: 'POST',
       body: formData
-    }).then(resp => {
-      console.log('Upload response:', resp);
-      if (resp.status === 200) {
-        alert('File successfully uploaded!');
-        window.location.reload(true);
-        $('#videoModal').modal('hide');
-      } else {
-        alert('Error uploading File!');
-        console.error('Error:', resp);
-      }
-    }).catch(err => {
-      console.error('Upload error:', err);
-    });
+    })
+      .then(resp => resp.json()) // Parse the JSON response
+      .then(data => {
+        console.log('Upload response:', data);
+        if (data.status === 'success') {
+          alert('File successfully uploaded!');
+          window.location.reload(true);
+          $('#videoModal').modal('hide');
+        } else {
+          alert('Error uploading File!');
+          console.error('Error:', data.message);
+        }
+      })
+      .catch(err => {
+        console.error('Upload error:', err);
+      });
   });
 });
