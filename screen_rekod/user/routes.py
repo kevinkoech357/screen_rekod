@@ -6,6 +6,7 @@ from flask import (
     current_app,
     jsonify,
     abort,
+    make_response,
 )
 from flask_login import current_user
 from screen_rekod.models.videos import Video
@@ -126,12 +127,13 @@ def upload():
                 # Check if the file extension is allowed
                 extension = guess_extension(file.mimetype)
                 if not extension or extension[1:] not in ALLOWED_EXTENSIONS:
-                    return (
+                    response = make_response(
                         jsonify(
                             {"status": "error", "message": "Invalid file extension"}
                         ),
                         400,
                     )
+                    return response
 
                 # Generate a unique filename with the help of consecutive numbering
                 i = 1
@@ -159,21 +161,24 @@ def upload():
                 db.session.add(new_video)
                 db.session.commit()
 
-                return (
+                response = make_response(
                     jsonify(
                         {"status": "success", "message": "File successfully uploaded"}
                     ),
                     200,
                 )
+                return response
 
-            return (
+            response = make_response(
                 jsonify({"status": "error", "message": "No video file provided"}),
                 400,
             )
+            return response
 
     except Exception as e:
         logger.error(f"Error during upload: {str(e)}")
-        return (
+        response = make_response(
             jsonify({"status": "error", "message": "Internal server error"}),
             500,
         )
+        return response
