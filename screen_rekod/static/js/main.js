@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
   const startButton = document.getElementById('startRecording');
   const stopButton = document.getElementById('stopRecording');
   const recordedVideoModal = document.getElementById('recordedVideoModal');
@@ -12,57 +12,59 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   let chunks = [];
-  let recorder;
-  let recordedBlob;
+  let recorder = null;
+  let recordedBlob = null;
 
-  startButton.addEventListener('click', function () {
-    if (!navigator.mediaDevices) {
-      console.error('getUserMedia not supported.');
-      return;
-    }
+  async function startRecording () {
+    const screenStream = null;
+    const audioStream = null;
 
-    // const constraints = { video: true, audio: true, };
-    navigator.mediaDevices.getDisplayMedia(
-      {
-        video: true,
-        audio: true
-
-      })
-      .then(function (stream) {
-        const mime = MediaRecorder.isTypeSupported('video/webm; codecs=h264')
-          ? 'video/webm; codecs=h264'
-          : 'video/webm';
-
-        recorder = new MediaRecorder(stream, {
-          mimeType: mime
-        });
-
-        chunks = [];
-        recorder.addEventListener('dataavailable', function (e) {
-          chunks.push(e.data);
-        });
-
-        recorder.addEventListener('stop', function () {
-          console.log('Recording stopped.');
-
-          recordedBlob = new Blob(chunks, { type: 'video/webm' });
-          recordedVideoModal.src = URL.createObjectURL(recordedBlob);
-
-          // Open the Bootstrap Modal
-          $('#videoModal').modal('show');
-        });
-
-        recorder.onstart = event => {
-          console.log('Recording started.');
-          startButton.disabled = true;
-        };
-
-        recorder.start();
-      })
-      .catch(function (err) {
-        console.error('getUserMedia error:', err);
+    try {
+      const screenStream = await navigator.mediaDevices.getDisplayMedia({
+        video: true
+        // preferCurrentTab: true,
       });
-  });
+
+      const audioStream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: false,
+          noiseSuppression: false
+        }
+      });
+
+      const mixedStream = new MediaStream([...screenStream.getTracks(), ...audioStream.getTracks()]);
+
+      recorder = new MediaRecorder(mixedStream, {
+        mimeType: 'video/webm'
+      });
+
+      chunks = [];
+      recorder.addEventListener('dataavailable', function (e) {
+        chunks.push(e.data);
+      });
+
+      recorder.addEventListener('stop', function () {
+        console.log('Recording stopped.');
+
+        recordedBlob = new Blob(chunks, {
+          type: 'video/mp4'
+        });
+        recordedVideoModal.src = URL.createObjectURL(recordedBlob);
+
+        // Open the Bootstrap Modal
+        $('#videoModal').modal('show');
+      });
+
+      recorder.onstart = event => {
+        console.log('Recording started.');
+        startButton.disabled = true;
+      };
+
+      recorder.start();
+    } catch (err) {
+      console.error('Error starting recording:', err);
+    }
+  }
 
   stopButton.onclick = () => {
     if (recorder && recorder.state === 'recording') {
@@ -91,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
       method: 'POST',
       body: formData
     })
-      .then(resp => resp.json()) // Parse the JSON response
+      .then(resp => resp.json())
       .then(data => {
         console.log('Upload response:', data);
         if (data.status === 'success') {
@@ -107,4 +109,6 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Upload error:', err);
       });
   });
+
+  startButton.addEventListener('click', startRecording);
 });
