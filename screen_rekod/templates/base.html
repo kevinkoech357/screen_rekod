@@ -26,10 +26,8 @@
                 <ul class="navbar-nav mx-auto">
                     {% if current_user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
-                        <!--
-                        <li class="nav-item"><a class="btn btn-success text-light" href="/account/settings">Account Settings</a>
-                        -->
-                        <li class="nav-item"><a class="btn btn-success text-light" href="/logout">Logout</a></li>
+                        <li class="nav-item"><a class="btn btn-primary shadow me-2" href="/dashboard">Dashboard</a>
+                        <li class="nav-item"><a class="btn btn-success text-light me-2" href="/logout">Logout</a></li>
                     {% else %}
                         <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="#Features" data-bs-target="#key features">Features</a></li>
