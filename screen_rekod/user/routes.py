@@ -21,7 +21,7 @@ from mimetypes import guess_extension
 user = Blueprint("user", __name__)
 
 # Specify the allowed file extensions and the upload folder
-ALLOWED_EXTENSIONS = {"webm"}
+ALLOWED_EXTENSIONS = {"webm", "mp4"}
 
 # Helper function to check if the file has an allowed extension
 def allowed_file(filename):
