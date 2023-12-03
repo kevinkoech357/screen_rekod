@@ -9,3 +9,4 @@ screen_rekod/user/__pycache__/
 screen_rekod/auth/__pycache__/
 screen_rekod/models/__pycache__/user.cpython-311.pyc
 screen_rekod/models/__pycache__/videos.cpython-311.pyc
+screen_rekod/logs/
