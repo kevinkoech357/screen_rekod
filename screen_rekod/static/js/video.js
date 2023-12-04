@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Prevent the form from submitting (to control the submission using your updateVideoDetails function)
     event.preventDefault();
 
-    // Call your function to update video details
+    // Call function to update video details
     updateVideoDetails();
   });
 
@@ -17,6 +17,20 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('deleteButton').addEventListener('click', function () {
     const deleteUrl = this.getAttribute('data-delete-url');
     deleteVideo(deleteUrl);
+  });
+
+  // Event listener for share button
+  document.getElementById('shareButton').addEventListener('click', function () {
+    // Show the share link modal and generate shareable link
+    $('#shareLinkModal').modal('show');
+    const videoId = this.getAttribute('data-video-id');
+    generateShareLink(videoId);
+  });
+
+  // Event listener for copy button
+  document.getElementById('copyLinkButton').addEventListener('click', function () {
+    // Call the copyToClipboard function
+    copyToClipboard();
   });
 
   function updateVideoDetails () {
@@ -39,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function () {
     })
       .then(response => response.json())
       .then(data => {
-        // Handle the response from the server, if needed
         console.log(data);
 
         // Update the video details on the page
@@ -66,12 +79,6 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
           alert('Video successfully deleted!');
 
-          // Remove the video element from the DOM
-          const videoContainer = document.querySelector('.video-container');
-          if (videoContainer) {
-            videoContainer.parentNode.removeChild(videoContainer);
-          }
-
           // Redirect to the dashboard
           window.location.href = window.location.origin + '/dashboard';
 
@@ -82,5 +89,27 @@ document.addEventListener('DOMContentLoaded', function () {
           console.error(error);
         });
     }
+  }
+
+  function generateShareLink (videoId) {
+    fetch(`/generate_share_link/${videoId}`)
+      .then(response => response.json())
+      .then(data => {
+      // Display the shareable link in the shareLink input element
+        const shareLinkInput = document.getElementById('shareLink');
+        shareLinkInput.value = data.shareable_link;
+        $('#shareLinkModal').modal('show');
+      })
+      .catch(error => console.error('Error:', error));
+  }
+
+  function copyToClipboard () {
+    // Copy the shareable link to the clipboard
+    const shareableLink = document.getElementById('shareLink');
+    shareableLink.select();
+    document.execCommand('copy');
+
+    // Close the modal after copying
+    $('#shareLinkModal').modal('hide');
   }
 });
