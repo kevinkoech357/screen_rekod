@@ -1,5 +1,14 @@
-from flask import Blueprint, jsonify, render_template, url_for, abort
+from flask import (
+    Blueprint,
+    jsonify,
+    render_template,
+    url_for,
+    abort,
+    current_app,
+    send_file,
+)
 from screen_rekod.models.videos import Video
+import os
 
 share = Blueprint("share", __name__)
 
@@ -56,7 +65,10 @@ def watch_video(video_id, sharing_token):
         # Check if the video and sharing token are valid
         if video and video.sharing_token == sharing_token:
             # Render a template that displays the video
-            return render_template("watch_video.html", video=video)
+            video_path = os.path.join(
+                current_app.config.get("UPLOAD_FOLDER", "uploads"), video.filename
+            )
+            return send_file(video_path, as_attachment=True)
 
         # If the video or sharing token is not valid, redirect to an error page
         return render_template("404.html")
