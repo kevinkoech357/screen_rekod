@@ -13,15 +13,16 @@ from screen_rekod.models.videos import Video
 from screen_rekod.models.user import User
 from screen_rekod import db
 from flask_login import current_user, login_required
-import os
 from werkzeug.utils import secure_filename
+from werkzeug.datastructures import FileStorage
 from mimetypes import guess_extension
+import os
 
 # Create the user blueprint
 user = Blueprint("user", __name__)
 
 # Specify the allowed file extensions and the upload folder
-ALLOWED_EXTENSIONS = {"webm", "mp4"}
+ALLOWED_EXTENSIONS = {"mp4"}
 
 # Helper function to check if the file has an allowed extension
 def allowed_file(filename):
@@ -107,81 +108,83 @@ def download_video(filename):
 @user.route("/upload", methods=["POST"])
 @login_required
 def upload():
-    """
-    Handle video file uploads, save to disk, and create a corresponding database record.
-
-    Returns:
-        JSON: Response indicating success or error with status.
-    """
     try:
-        # Use app.app_context()
         with current_app.app_context():
-            # Import the logger instance from the main application
             logger = current_app.logger
 
-            if "video_file" in request.files:
-                file = request.files["video_file"]
-                title = request.form.get("title", "")
-                description = request.form.get("description", "")
-
-                # Check if the file extension is allowed
-                extension = guess_extension(file.mimetype)
-                if not extension or extension[1:] not in ALLOWED_EXTENSIONS:
-                    response = make_response(
-                        jsonify(
-                            {"status": "error", "message": "Invalid file extension"}
-                        ),
-                        400,
-                    )
-                    return response
-
-                # Generate a unique filename with the help of consecutive numbering
-                i = 1
-                while True:
-                    filename = f"screen_rekod-{i}{extension}"
-                    dst = os.path.join(
-                        current_app.config.get("UPLOAD_FOLDER", "uploads"),
-                        secure_filename(filename),
-                    )
-                    if not os.path.exists(dst):
-                        break
-                    i += 1
-
-                # Save the file to disk
-                file.save(dst)
-
-                # Create a new Video record in the database
-                new_video = Video(
-                    title=title,
-                    description=description,
-                    filename=filename,
-                    user=current_user,
+            # Check if the request has a file in the "video_file" field
+            if "video_file" not in request.files:
+                return make_response(
+                    jsonify({"status": "error", "message": "No video file provided"}),
+                    400,
                 )
 
-                db.session.add(new_video)
-                db.session.commit()
+            # Get the file from the request
+            video_file: FileStorage = request.files["video_file"]
 
-                response = make_response(
-                    jsonify(
-                        {"status": "success", "message": "File successfully uploaded"}
-                    ),
-                    200,
+            # Get other data from the request
+            title = request.form.get("title", "")
+            description = request.form.get("description", "")
+            browser_name = request.form.get("browserName", "")
+            browser_version = request.form.get("browserVersion", "")
+            browser_layout = request.form.get("browserLayout", "")
+            operating_system = request.form.get("operatingSystem", "")
+
+            # Check if the file extension is allowed
+            extension = guess_extension(video_file.mimetype)
+            if not extension or extension[1:] not in ALLOWED_EXTENSIONS:
+                return make_response(
+                    jsonify({"status": "error", "message": "Invalid file extension"}),
+                    400,
                 )
-                response.headers["Content-Type"] = "application/json"
-                return response
 
-            response = make_response(
-                jsonify({"status": "error", "message": "No video file provided"}),
-                400,
+            # Generate a unique filename with consecutive numbering
+            i = 1
+            while True:
+                filename = f"screen_rekod-{i}{extension}"
+                dst = os.path.join(
+                    current_app.config.get("UPLOAD_FOLDER", "uploads"),
+                    secure_filename(filename),
+                )
+                if not os.path.exists(dst):
+                    break
+                i += 1
+
+            # Save the file to disk
+            video_file.save(dst)
+
+            # Create a new Video record in the database
+            new_video = Video(
+                title=title,
+                description=description,
+                filename=filename,
+                user=current_user,
+                browser_name=browser_name,
+                browser_version=browser_version,
+                browser_layout=browser_layout,
+                operating_system=operating_system,
             )
-            response.headers["Content-Type"] = "application/json"
-            return response
+
+            db.session.add(new_video)
+            db.session.commit()
+
+            # Convert the Video object to a dictionary using the format() method
+            video_dict = new_video.format()
+
+            return (
+                jsonify(
+                    {
+                        "status": "success",
+                        "message": "File successfully uploaded",
+                        **video_dict,
+                    }
+                ),
+                201,
+            )
 
     except Exception as e:
         logger.error(f"Error during upload: {str(e)}")
-        response = make_response(
+        return make_response(
             jsonify({"status": "error", "message": "Internal server error"}),
             500,
         )
-        response.headers["Content-Type"] = "application/json"
-        return response
