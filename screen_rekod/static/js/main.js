@@ -15,21 +15,26 @@ document.addEventListener('DOMContentLoaded', async function () {
   let recorder = null;
   let recordedBlob = null;
 
+  // Get browser and OS information
+  const browserName = platform.name;
+  const browserVersion = platform.version;
+  const browserLayout = platform.layout;
+  const operatingSystem = platform.os;
+
   async function startRecording () {
     const screenStream = null;
     const audioStream = null;
 
     try {
-      const screenStream = await navigator.mediaDevices.getDisplayMedia({
-        video: true
-        // preferCurrentTab: true,
-      });
-
       const audioStream = await navigator.mediaDevices.getUserMedia({
         audio: {
           echoCancellation: false,
           noiseSuppression: false
         }
+      });
+
+      const screenStream = await navigator.mediaDevices.getDisplayMedia({
+        video: true
       });
 
       const mixedStream = new MediaStream([...screenStream.getTracks(), ...audioStream.getTracks()]);
@@ -83,11 +88,18 @@ document.addEventListener('DOMContentLoaded', async function () {
     formData.append('video_file', recordedBlob);
     formData.append('title', titleModal.value);
     formData.append('description', descriptionModal.value);
+    formData.append('browserName', browserName);
+    formData.append('browserVersion', browserVersion);
+    formData.append('browserLayout', browserLayout);
+    formData.append('operatingSystem', operatingSystem);
 
     console.log('Uploading...');
     console.log('Title:', titleModal.value);
     console.log('Description:', descriptionModal.value);
-    console.log('Recorded Blob:', recordedBlob);
+    console.log('browserName:', browserName);
+    console.log('browserVersion:', browserVersion);
+    console.log('browserLayout:', browserLayout);
+    console.log('Operating System:', operatingSystem);
 
     fetch('/upload', {
       method: 'POST',
