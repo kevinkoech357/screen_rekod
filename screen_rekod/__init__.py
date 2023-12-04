@@ -77,11 +77,13 @@ def create_app():
     from screen_rekod.auth.routes import auth
     from screen_rekod.user.routes import user
     from screen_rekod.video.routes import video
+    from screen_rekod.share.routes import share
 
     # Register blueprints
     app.register_blueprint(auth)
     app.register_blueprint(user)
     app.register_blueprint(video)
+    app.register_blueprint(share)
 
     # Import models
     from screen_rekod.models.user import User
