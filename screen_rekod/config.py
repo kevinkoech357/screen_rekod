@@ -15,8 +15,6 @@ class App_Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # Disable echoing SQL statements to the console
     SQLALCHEMY_ECHO = False
-    # Flashed message duration
-    MESSAGE_FLASHING_OPTIONS = {"duration": 5}
     SESSION_PERMANENT = False
     # Video uploads folder
     UPLOAD_FOLDER = "/home/ubuntu/screen_rekod/uploads"
