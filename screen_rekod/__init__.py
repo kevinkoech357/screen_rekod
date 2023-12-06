@@ -7,11 +7,16 @@ from flask_bootstrap import Bootstrap5
 import logging
 import os
 from logging.handlers import RotatingFileHandler
+from flask_mail import Mail
+from flask_wtf.csrf import CSRFProtect
+
 
 # Initialize Flask extensions
 db = SQLAlchemy()
 login_manager = LoginManager()
 bootstrap = Bootstrap5()
+mail = Mail()
+csrf = CSRFProtect()
 
 
 def create_app():
@@ -37,6 +42,8 @@ def create_app():
     db.init_app(app)
     login_manager.init_app(app)
     bootstrap.init_app(app)
+    mail.init_app(app)
+    csrf.init_app(app)
 
     # Ensure that the 'logs' directory exists
     log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs")
