@@ -1,4 +1,5 @@
 import os
+import logging
 from dotenv import load_dotenv
 
 load_dotenv(".env")
@@ -17,4 +18,11 @@ class App_Config:
     SQLALCHEMY_ECHO = False
     SESSION_PERMANENT = False
     # Video uploads folder
-    UPLOAD_FOLDER = "/home/ubuntu/screen_rekod/uploads"
+    UPLOAD_FOLDER = "/home/kevinkoech357/Personal/alx-project/screen_rekod/uploads"
+    # Flask caching Config
+    # CACHE_TYPE = "SimpleCache"
+    # CACHE_DEFAULT_TIMEOUT = 600
+    # CACHE_THRESHOLD = 500
+    # Logging configurations
+    LOG_LEVEL = logging.INFO
+    LOG_FILE = "screen_rekod.log"

@@ -3,13 +3,19 @@ from flask_login import current_user, login_required
 from screen_rekod import db
 from screen_rekod.models.videos import Video
 import os
+import logging
+
+# from screen_rekod import cache
 
 # Create video Blueprint
 video = Blueprint("video", __name__)
 
+logger = logging.getLogger(__name__)
+
 
 @video.route("/video/<string:video_id>", methods=["GET"])
 @login_required
+# @cache.cached(timeout=120)
 def video_detail(video_id):
     """
     Render the detailed view page for a specific video.
@@ -20,12 +26,18 @@ def video_detail(video_id):
     Returns:
         str: HTML content for the video detail page.
     """
-    video = Video.query.get(video_id)
+    try:
+        video = Video.query.get(video_id)
 
-    if not video:
-        abort(404)
+        if not video:
+            logger.warning("Video with ID %s not found", video_id)
+            abort(404)
 
-    return render_template("video.html", video=video)
+        return render_template("video.html", video=video)
+
+    except Exception as e:
+        logger.error("Error in video_detail route: %s", str(e))
+        return "Something went wrong", 500
 
 
 @video.route("/update-video/<string:video_id>", methods=["POST"])
@@ -44,6 +56,7 @@ def update_video(video_id):
         video = Video.query.get(video_id)
 
         if not video:
+            logger.warning("Video with ID %s not found", video_id)
             abort(404)
 
         # Fetch updated details from the form data
@@ -57,6 +70,7 @@ def update_video(video_id):
         # Commit the changes
         db.session.commit()
 
+        logger.info("Video details updated successfully. Video ID: %s", video_id)
         return (
             jsonify(
                 {"status": "success", "message": "Video details updated successfully"}
@@ -65,8 +79,7 @@ def update_video(video_id):
         )
 
     except Exception as e:
-        # Handle any unexpected errors
-        print(str(e))
+        logger.error("Error in update_video route: %s", str(e))
         return jsonify({"error": str(e)}), 500
 
 
@@ -86,6 +99,7 @@ def delete_video(video_id):
         video = Video.query.get(video_id)
 
         if not video:
+            logger.warning("Video with ID %s not found", video_id)
             abort(404)
 
         # Delete the video from the database
@@ -97,12 +111,12 @@ def delete_video(video_id):
         if os.path.exists(video_path):
             os.remove(video_path)
 
+        logger.info("Video deleted successfully. Video ID: %s", video_id)
         return (
             jsonify({"status": "success", "message": "Video deleted successfully"}),
             200,
         )
 
     except Exception as e:
-        # Handle any unexpected errors
-        print(str(e))
+        logger.error("Error in delete_video route: %s", str(e))
         return jsonify({"error": str(e)}), 500

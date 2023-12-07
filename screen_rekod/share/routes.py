@@ -9,8 +9,11 @@ from flask import (
 )
 from screen_rekod.models.videos import Video
 import os
+import logging
 
 share = Blueprint("share", __name__)
+
+logger = logging.getLogger(__name__)
 
 
 @share.route("/generate_share_link/<string:video_id>", methods=["GET"])
@@ -30,6 +33,7 @@ def generate_share_link(video_id):
 
         # Check if the video is valid
         if not video:
+            logger.warning("Video with ID %s not found", video_id)
             abort(404)
 
         # Generate the shareable link
@@ -39,10 +43,11 @@ def generate_share_link(video_id):
             sharing_token=video.sharing_token,
             _external=True,
         )
+        logger.info("Shareable link generated successfully for Video ID: %s", video_id)
         return jsonify({"shareable_link": shareable_link})
 
     except Exception as e:
-        print(f"Error generating shareable link: {e}")
+        logger.error("Error generating shareable link: %s", str(e))
         return jsonify({"error": "Internal server error"}), 500
 
 
@@ -68,11 +73,13 @@ def watch_video(video_id, sharing_token):
             video_path = os.path.join(
                 current_app.config.get("UPLOAD_FOLDER", "uploads"), video.filename
             )
+            logger.info("Successfully rendered video page for Video ID: %s", video_id)
             return send_file(video_path, as_attachment=True)
 
         # If the video or sharing token is not valid, redirect to an error page
+        logger.warning("Invalid video or sharing token. Video ID: %s", video_id)
         return render_template("404.html")
 
     except Exception as e:
-        print(f"Error handling shareable link: {e}")
+        logger.error("Error handling shareable link: %s", str(e))
         return render_template("500.html")

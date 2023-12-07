@@ -8,7 +8,8 @@ import logging
 import os
 from logging.handlers import RotatingFileHandler
 from flask_mail import Mail
-from flask_wtf.csrf import CSRFProtect
+
+# from flask_caching import Cache
 
 
 # Initialize Flask extensions
@@ -16,7 +17,7 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 bootstrap = Bootstrap5()
 mail = Mail()
-csrf = CSRFProtect()
+# cache = Cache()
 
 
 def create_app():
@@ -43,28 +44,10 @@ def create_app():
     login_manager.init_app(app)
     bootstrap.init_app(app)
     mail.init_app(app)
-    csrf.init_app(app)
+    # cache.init_app(app)
 
-    # Ensure that the 'logs' directory exists
-    log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs")
-    os.makedirs(log_dir, exist_ok=True)
-
-    # Create a specific logger instance for the application
-    logger = logging.getLogger(__name__)
-
-    # Configure a rotating file handler
-    log_file = os.path.join(log_dir, "screen_rekod.log")
-    log_handler = RotatingFileHandler(log_file, maxBytes=1024 * 1024, backupCount=5)
-    log_handler.setLevel(logging.DEBUG)
-
-    # Set a custom log format
-    formatter = logging.Formatter(
-        "%(asctime)s - %(levelname)s - %(module)s - %(message)s"
-    )
-    log_handler.setFormatter(formatter)
-
-    # Add the rotating file handler to the logger
-    logger.addHandler(log_handler)
+    # Configure logging
+    configure_logging(app)
 
     # User loader function
     @login_manager.user_loader
@@ -128,4 +111,36 @@ def create_app():
         """
         return render_template("500.html"), 500
 
+    @app.errorhandler(413)
+    def request_entity_too_large(error):
+        """
+        Handle 413 errors.
+
+        Args:
+            error: The error information.
+        """
+        return "File Too Large, Limit is 50MB.", 413
+
     return app
+
+
+def configure_logging(app):
+    # Configure the root logger
+    log_level = app.config.get("LOG_LEVEL", logging.INFO)
+    logging.basicConfig(level=log_level)
+
+    # Add a rotating file handler
+    log_file = app.config.get("LOG_FILE", "app.log")
+    file_handler = RotatingFileHandler(log_file, maxBytes=1024 * 1024, backupCount=10)
+    file_handler.setFormatter(
+        logging.Formatter("%(asctime)s [%(levelname)s] - %(message)s")
+    )
+    app.logger.addHandler(file_handler)
+
+    # Add a console handler for development
+    if app.debug:
+        console_handler = logging.StreamHandler()
+        console_handler.setFormatter(
+            logging.Formatter("%(asctime)s [%(levelname)s] - %(message)s")
+        )
+        app.logger.addHandler(console_handler)
