@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section id="Contact" class="py-5">
+    <!-- Start: Contact Details -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-xl-6 text-center mx-auto">
+                <p class="fw-bold text-success mb-2">Contact Us</p>
+                <h3 class="fw-bold">Have Questions or Suggestions?</h3>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-lg-6 mb-4">
+                <p class="text-muted">Feel free to reach out to us. We are here to assist you with any inquiries or feedback you may have. Let's connect!</p>
+            </div>
+            <div class="col-lg-6">
+                <form method="post" action="{{ url_for('user.contact') }}">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-4">
+                        {{ form.name(class="form-control", placeholder="Your Name", required="required") }}
+                        {% for error in form.name.errors %}
+                                <span style="color: red;">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-4">
+                        {{ form.email(class="form-control", placeholder="Your Email", required="required") }}
+                        {% for error in form.email.errors %}
+                            <span style="color: red;">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-4">
+                        {{ form.message(class="form-control", rows="4", placeholder="Your Message", required="required") }}
+                        {% for error in form.message.errors %}
+                            <span style="color: red;">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-success btn-lg" type="submit">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
