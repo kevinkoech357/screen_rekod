@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       });
 
       recorder.addEventListener('stop', function () {
+        recorder.stop();
         console.log('Recording stopped.');
 
         recordedBlob = new Blob(chunks, {
@@ -67,7 +68,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
       recorder.start();
     } catch (err) {
-      console.error('Error starting recording:', err);
+      console.log('Error starting recording:', err);
     }
   }
 
@@ -114,11 +115,11 @@ document.addEventListener('DOMContentLoaded', async function () {
           $('#videoModal').modal('hide');
         } else {
           alert('Error uploading File!');
-          console.error('Error:', data.message);
+          console.log('Error:', data.message);
         }
       })
       .catch(err => {
-        console.error('Upload error:', err);
+        console.log('Upload error:', err);
       });
   });
 
