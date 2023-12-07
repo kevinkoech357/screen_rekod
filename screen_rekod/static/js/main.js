@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', async function () {
   let chunks = [];
   let recorder = null;
   let recordedBlob = null;
+  let screenStream = null;
+  let audioStream = null;
 
   // Get browser and OS information
   const browserName = platform.name;
@@ -22,18 +24,15 @@ document.addEventListener('DOMContentLoaded', async function () {
   const operatingSystem = platform.os;
 
   async function startRecording () {
-    const screenStream = null;
-    const audioStream = null;
-
     try {
-      const audioStream = await navigator.mediaDevices.getUserMedia({
+      audioStream = await navigator.mediaDevices.getUserMedia({
         audio: {
           echoCancellation: false,
           noiseSuppression: false
         }
       });
 
-      const screenStream = await navigator.mediaDevices.getDisplayMedia({
+      screenStream = await navigator.mediaDevices.getDisplayMedia({
         video: true
       });
 
@@ -66,18 +65,25 @@ document.addEventListener('DOMContentLoaded', async function () {
         startButton.disabled = true;
       };
 
+      // Listen for the 'ended' event on the video track
+      const videoTrack = screenStream.getVideoTracks()[0];
+      videoTrack.addEventListener('ended', () => {
+        console.log('Screen sharing ended. Stopping recording...');
+        stopRecording();
+      });
+
       recorder.start();
     } catch (err) {
       console.log('Error starting recording:', err);
     }
   }
 
-  stopButton.onclick = () => {
+  function stopRecording () {
     if (recorder && recorder.state === 'recording') {
       recorder.stop();
       console.log('Recorder stopped manually.');
     }
-  };
+  }
 
   uploadButtonModal.addEventListener('click', function () {
     if (!recordedBlob) {
@@ -124,4 +130,5 @@ document.addEventListener('DOMContentLoaded', async function () {
   });
 
   startButton.addEventListener('click', startRecording);
+  stopButton.onclick = () => stopRecording();
 });
