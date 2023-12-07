@@ -74,7 +74,7 @@ def watch_video(video_id, sharing_token):
                 current_app.config.get("UPLOAD_FOLDER", "uploads"), video.filename
             )
             logger.info("Successfully rendered video page for Video ID: %s", video_id)
-            return render_template("watch_video.html", video=video)
+            return render_template("watch_video.html", video_path=video_path, video=video)
 
         # If the video or sharing token is not valid, redirect to an error page
         logger.warning("Invalid video or sharing token. Video ID: %s", video_id)
