@@ -22,7 +22,7 @@
                 <!-- Border around the video container -->
                 <div class="video-container rounded mb-3">
                     <video controls width="100%" autoplay>
-                        <source src="{{ url_for('share.watch_video', video_id=video.id, sharing_token=video.sharing_token) }}" type="video/mp4">
+                        <source src="{{ video_path }}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
