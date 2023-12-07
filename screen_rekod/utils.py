@@ -6,12 +6,14 @@ from threading import Thread
 
 load_dotenv(".env")
 
+
 def send_async_email(*args):
     """
     Asynchronously send an email using Flask-Mail within the application context.
     """
     with current_app.app_context():
         mail.send(args[0])
+
 
 def send_email(subject, sender, recipients, text_body, html_body):
     """
