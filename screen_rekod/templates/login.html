@@ -24,9 +24,15 @@
                                 {{ form.hidden_tag() }}
                                 <div class="mb-3">
                                     {{ form.username_or_email(size=20, class="form-control", placeholder="Username or Email") }}
+                                    {% for error in form.username_or_email.errors %}
+                                        <span style="color: red;">{{ error }}</span>
+                                    {% endfor %}
                                 </div>
                                 <div class="mb-3">
                                     {{ form.password(size=20, class="form-control", placeholder="Password") }}
+                                    {% for error in form.password.errors %}
+                                        <span style="color: red;">{{ error }}</span>
+                                    {% endfor %}
                                 </div>
                                 <div class="mb-3">
                                     <button class="btn btn-primary shadow d-block w-100" type="submit">Log in</button>
