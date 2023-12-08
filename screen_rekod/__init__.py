@@ -8,6 +8,7 @@ import logging
 import os
 from logging.handlers import RotatingFileHandler
 from flask_mail import Mail
+from flask_migrate import Migrate
 
 # from flask_caching import Cache
 
@@ -17,6 +18,7 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 bootstrap = Bootstrap5()
 mail = Mail()
+migrate = Migrate()
 # cache = Cache()
 
 
@@ -41,6 +43,7 @@ def create_app():
 
     # Initialize Flask extensions
     db.init_app(app)
+    migrate.init_app(app, db)
     login_manager.init_app(app)
     bootstrap.init_app(app)
     mail.init_app(app)
