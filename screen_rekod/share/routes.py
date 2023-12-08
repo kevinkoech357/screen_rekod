@@ -5,7 +5,7 @@ from flask import (
     url_for,
     abort,
     current_app,
-    send_file,
+    send_from_directory,
 )
 from screen_rekod.models.videos import Video
 import os
@@ -77,7 +77,8 @@ def watch_video(video_id, sharing_token):
             logger.info("Video path: %s", video_path)
 
             logger.info("Successfully rendered video page for Video ID: %s", video_id)
-            return send_file(video_path, as_attachment=False)
+
+            return render_template("watch_video.html", video=video)
 
         # If the video or sharing token is not valid, redirect to an error page
         logger.warning("Invalid video or sharing token. Video ID: %s", video_id)
@@ -85,4 +86,45 @@ def watch_video(video_id, sharing_token):
 
     except Exception as e:
         logger.error("Error handling shareable link: %s", str(e))
+        return render_template("500.html")
+
+
+@share.route(
+    "/get_video/<string:video_id>/<string:sharing_token>/<string:filename>",
+    methods=["GET"],
+)
+def get_video(video_id, sharing_token, filename):
+    """
+    Serve a video file for viewing based on the provided video ID, sharing token, and filename.
+
+    Args:
+        video_id (str): The unique identifier of the video.
+        sharing_token (str): The sharing token associated with the video.
+        filename (str): The name of the video file.
+
+    Returns:
+        Response: The video file if the provided parameters are valid, or a 404 error page.
+    """
+    try:
+        # Retrieve the video from the database based on the provided video_id
+        video = Video.query.get(video_id)
+
+        # Check if the video is valid and the sharing token matches
+        if (
+            video
+            and video.sharing_token == sharing_token
+            and video.filename == filename
+        ):
+            # Construct the path to the video file
+            video_directory = current_app.config.get("UPLOAD_FOLDER", "uploads")
+            return send_from_directory(video_directory, filename, as_attachment=False)
+
+        # If the video or sharing token is not valid, return a 404 error
+        logger.warning(
+            "Invalid video, sharing token, or filename. Video ID: %s", video_id
+        )
+        return render_template("404.html")
+
+    except Exception as e:
+        logger.error("Error serving video: %s", str(e))
         return render_template("500.html")
