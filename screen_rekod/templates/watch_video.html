@@ -21,8 +21,8 @@
 
                 <!-- Border around the video container -->
                 <div class="video-container rounded mb-3">
-                    <video controls width="100%" autoplay>
-                        <source src="{{ video_path }}" type="video/mp4">
+                    <video controls width="100%" controls>
+                        <source src="{{ url_for('share.get_video', video_id=video.id, sharing_token=video.sharing_token, filename=video.filename) }}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
@@ -46,7 +46,9 @@
                         <a href="{{ url_for('user.download_video', filename=video.filename) }}" class="btn btn-primary mb-2">
                             <i class="fas fa-download"></i> Download
                         </a>
-                        <button class="btn btn-info mb-2"><i class="fas fa-pen"></i> Transcribe</button>
+                        <a href="https://transkript.me" class="btn btn-info mb-2">
+                            <i class="fas fa-pen"></i> Transcribe
+                        </a>
 
                         </button>
                     </div>
