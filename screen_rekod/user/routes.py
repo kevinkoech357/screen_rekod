@@ -267,7 +267,7 @@ def save_data_to_json(data):
     """
     try:
         with open("contact.json", "a") as json_file:
-            json.dump(data, json_file)
+            json.dump(data, json_file, indent=2)
             json_file.write("\n")  # Add a newline to separate entries
 
     except Exception as e:

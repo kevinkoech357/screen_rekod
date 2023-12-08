@@ -4,7 +4,6 @@ from sqlalchemy.orm import relationship
 import uuid
 import secrets
 
-
 # Helper function to generate a random UUID
 def generate_uuid():
     return str(uuid.uuid4())
@@ -26,12 +25,13 @@ class Video(db.Model):
         description (str): Description of the video.
         filename (str): Filename of the video.
         created_at (datetime): Timestamp indicating when the video was created.
+        updated_at (datetime): Timestamp indicating when the video was last updated.
 
     Relationships:
         user (User): Relationship to the User model to associate videos with their respective users.
 
     Methods:
-        __init__(self, user, title, description, filename, created_at=None, screen_size=None, browser_info=None, operating_system=None):
+        __init__(self, user, title, description, filename, created_at=None, upsated_at=None, sharing_token=None, browser_name=None, browser_version=None, browser_layout=None, operating_system=None):
             Initializes a new Video instance.
 
         format(self):
@@ -53,8 +53,14 @@ class Video(db.Model):
         server_default=db.func.current_timestamp(),
         nullable=False,
     )
+    updated_at = db.Column(
+        db.TIMESTAMP(timezone=True),
+        server_default=db.func.current_timestamp(),
+        onupdate=db.func.current_timestamp(),
+        nullable=False,
+    )
 
-    # Additional columns for  sharing token , browser and OS
+    # Additional columns for sharing token, browser, and OS
     sharing_token = db.Column(db.String(32), unique=True, nullable=False)
     browser_name = db.Column(db.String(50), nullable=True)
     browser_version = db.Column(db.String(50), nullable=True)
@@ -71,6 +77,7 @@ class Video(db.Model):
         description,
         filename,
         created_at=None,
+        updated_at=None,
         sharing_token=None,
         browser_name=None,
         browser_version=None,
@@ -86,6 +93,7 @@ class Video(db.Model):
             description (str): Description of the video.
             filename (str): Filename of the video.
             created_at (datetime): Timestamp indicating when the video was created.
+            updated_at (datetime): Timestamp indicating when the video was updated.
             sharing_token: Random strong to enable video share.
             browser_name: Name of browser.
             browser_version: Version of browser.
@@ -97,6 +105,9 @@ class Video(db.Model):
         self.description = description
         self.filename = filename
         self.created_at = created_at or datetime.utcnow()
+        self.updated_at = (
+            updated_at or datetime.utcnow()
+        )  # Set initial updated_at timestamp
         self.sharing_token = sharing_token or generate_sharing_token()
         self.browser_name = browser_name
         self.browser_version = browser_version
@@ -121,5 +132,6 @@ class Video(db.Model):
             "browser_version": self.browser_version,
             "browser_layout": self.browser_layout,
             "operating_system": self.operating_system,
-            "created_at": self.created_at,
+            "created_at": self.created_at.strftime("%Y-%m-%dT%H:%M:%S UTC"),
+            "updated_at": self.updated_at.strftime("%Y-%m-%dT%H:%M:%S UTC"),
         }
