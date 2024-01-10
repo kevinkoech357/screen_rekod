@@ -18,7 +18,7 @@ class App_Config:
     SQLALCHEMY_ECHO = False
     SESSION_PERMANENT = False
     # Video uploads folder
-    UPLOAD_FOLDER = "/home/ubuntu/screen_rekod/uploads"
+    UPLOAD_FOLDER = "/workspace/uploads"
     # Flask caching Config
     # CACHE_TYPE = "SimpleCache"
     # CACHE_DEFAULT_TIMEOUT = 600
