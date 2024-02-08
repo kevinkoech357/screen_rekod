@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship
 import uuid
 import secrets
 
+
 # Helper function to generate a random UUID
 def generate_uuid():
     return str(uuid.uuid4())

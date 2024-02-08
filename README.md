@@ -32,7 +32,7 @@ To leverage Screen Rekod locally, follow these steps:
 $ git clone https://github.com/kevinkoech357/screen_rekod.git
 
 # Navigate to the project directory
-$ cd screen-rekod
+$ cd screen_rekod
 
 # Create and activate a virtual environment
 $ python -m venv venv
@@ -41,10 +41,13 @@ $ source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
 # Install dependencies
 $ pip install -r requirements.txt
 
+# Run tests
+$ pytest
+
 # Start application
 $ python run.py
 ```
-N/B: Navigate to 127.0.0.1:5000 on your browser to view the app.
+N/B: Navigate to http://127.0.0.1:5000 on your browser to view the app.
 
 ### Recording
 Explore the sophisticated screen recording services offered by Screen Rekod:
@@ -63,15 +66,16 @@ To initiate a recording with Screen Rekod, follow these steps:
 - Launch the application.
 - Select the desired screen or application window for recording.
 - Configure recording settings based on your preferences.
-- Click the "Record" button to commence capturing your screen.
+- Click the "Start recording" button to commence capturing your screen.
+- Allow microphone use.
 - Stop the recording when your session is complete.
 
 ### Before You Go...
 Explore additional tools and resources:
 
-* Transkript: Convert audio and video recordings into accurate written text.
-* Source Code: Access the source code of Screen Rekod on GitHub.
+* [Transkript](https://github.com/kevinkoech357/transkript): Convert audio and video recordings into accurate written text.
+* Don't forget to star the repo.
 
 ### License
-This project is licensed under the MIT License. For a comprehensive overview, refer to the LICENSE file.
+This project is licensed under the MIT License. For a comprehensive overview, refer to the [LICENSE](https://github.com/kevinkoech357/screen_rekod/blob/main/LICENSE) file.
 

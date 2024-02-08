@@ -5,15 +5,12 @@ from flask import (
     request,
     current_app,
     jsonify,
-    abort,
-    make_response,
     flash,
     redirect,
     url_for,
 )
 from flask_login import current_user
 from screen_rekod.models.videos import Video
-from screen_rekod.models.user import User
 from screen_rekod import db
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
@@ -33,6 +30,7 @@ logger = logging.getLogger(__name__)
 
 # Specify the allowed file extensions and the upload folder
 ALLOWED_EXTENSIONS = {"webm", "mp4"}
+
 
 # Helper function to check if the file has an allowed extension
 def allowed_file(filename):

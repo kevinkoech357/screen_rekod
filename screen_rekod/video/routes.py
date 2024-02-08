@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, render_template, abort, current_app, request
-from flask_login import current_user, login_required
+from flask_login import login_required
 from screen_rekod import db
 from screen_rekod.models.videos import Video
 import os

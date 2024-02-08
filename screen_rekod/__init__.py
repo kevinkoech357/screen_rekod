@@ -5,7 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap5
 import logging
-import os
 from logging.handlers import RotatingFileHandler
 from flask_mail import Mail
 from flask_migrate import Migrate
@@ -80,7 +79,6 @@ def create_app():
 
     # Import models
     from screen_rekod.models.user import User
-    from screen_rekod.models.videos import Video
 
     with app.app_context():
         # Create database tables

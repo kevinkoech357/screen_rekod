@@ -1,9 +1,7 @@
 import pytest
-from flask import url_for
 from screen_rekod import db
 from screen_rekod.models.user import User
-from screen_rekod.auth.forms import LoginForm, RegistrationForm, ResetPasswordForm
-from tests.conftest import app, client
+from screen_rekod.auth.forms import LoginForm
 
 
 @pytest.fixture
