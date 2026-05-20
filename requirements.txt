@@ -17,7 +17,7 @@ Flask-Uploads==0.2.1
 Flask-WTF==1.2.1
 greenlet==3.0.1
 gunicorn==23.0.0
-idna==3.7
+idna==3.15
 iniconfig==2.0.0
 itsdangerous==2.1.2
 Jinja2==3.1.6
